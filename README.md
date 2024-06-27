@@ -1,6 +1,3 @@
-olive
-=====
-
-Fork "olive" to create a new MOOSE-based application.
-
-For more information see: [https://mooseframework.org/getting_started/new_users.html#create-an-app](https://mooseframework.org/getting_started/new_users.html#create-an-app)
+# PhaseFieldOxides
+MOOSE app modeling oxide dynamics for a Summer Internship
+>>>>>>> b55b7e3b1c4af573e14b59953f0c07e338cd401d
