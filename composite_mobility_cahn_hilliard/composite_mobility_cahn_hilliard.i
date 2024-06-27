@@ -68,7 +68,7 @@
       prop_values = '1'
     [../]
     [./tensor_iso]
-      type = ConstantAnisotropicMobility
+      type = ConstantAnisotropicMobility #This is actually isotropic but this material object is best for the CompositeMobilityTensor
       M_name = isotropic_tensor
       tensor = '0.1 0 0 
                 0 0.1 0 
