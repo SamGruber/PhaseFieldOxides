@@ -65,7 +65,7 @@
     [./constants]
       type = GenericFunctionMaterial
       prop_names = 'kappa_c M'
-      prop_values = '1 0.5'
+      prop_values = '1 0.1'
     [../]
     [./free_energy]
     type = DerivativeParsedMaterial
