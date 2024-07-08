@@ -1,5 +1,6 @@
 #
-# Solving the Basic Cahn-Hilliard equation
+# Solving the Basic Cahn-Hilliard equation with the 
+# main interest of observing differences due to change in mobility value.
 #
 
 [Mesh]
@@ -7,13 +8,13 @@
     type = GeneratedMesh
     dim = 2
     elem_type = QUAD4
-    nx = 100
-    ny = 100
+    nx = 300
+    ny = 300
     nz = 0
     xmin = 0
-    xmax = 25
+    xmax = 50
     ymin = 0
-    ymax = 25
+    ymax = 50
     zmin = 0
     zmax = 0
   []
@@ -33,8 +34,8 @@
     [./cIC]
       type = RandomIC
       variable = c
-      min = 0.49
-      max = 0.51
+      min = 0.48
+      max = 0.52
     [../]
   []
   
@@ -64,15 +65,15 @@
   [Materials]
     [./constants]
       type = GenericFunctionMaterial
-      prop_names = 'kappa_c M'
-      prop_values = '1 0.1'
+      prop_names = 'kappa_c M' # Change this mobility value to observe differences
+      prop_values = '0.1 0.8'
     [../]
     [./free_energy]
     type = DerivativeParsedMaterial
     property_name = f_loc
     coupled_variables = c
     constant_names = 'W'
-    constant_expressions = 2.7
+    constant_expressions = 2.5
     # expression = W*(1-c)^2*(1+c)^2
     expression = c*log(c)+(1-c)*log(1-c)+W*c*(1-c)
     enable_jit = true
@@ -87,7 +88,7 @@
     [../]
   []
 
-  [Postprocessors] # Make sure to divide by system volume
+  [Postprocessors] # Make sure to divide by system volume when plotting as this returns only the element volume
   [./integral_c]
     type = ElementIntegralVariablePostprocessor
     variable = c
@@ -100,22 +101,25 @@
 
   [Executioner]
     type = Transient
-    solve_type = NEWTON
+    solve_type = PJFNK
     scheme = bdf2
-    l_max_its = 30
+    l_max_its = 150
     l_tol = 1e-6
     nl_max_its = 20
     nl_abs_tol = 1e-9
-    end_time = 20
-    dt = 2    
+    end_time = 10
+    dt = 0.2
+    # petsc_options = '-pc_svd_monitor'    
     petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
                            -sub_pc_type -pc_asm_overlap'
-    petsc_options_value = 'asm      31                  preonly
-                           ilu          1'
+    petsc_options_value = 'asm      1000                  preonly
+                           ilu          2'
+    #auto_preconditioning = true
+    #automatic_scaling = true                       
   []
-  
-  [Outputs]
-    exodus = true
-    console = true
-    csv = true
-  []
+
+[Outputs]
+  exodus = true
+  console = true
+  csv = true
+[]
