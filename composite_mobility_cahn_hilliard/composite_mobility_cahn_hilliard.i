@@ -7,13 +7,13 @@
     type = GeneratedMesh
     dim = 2
     elem_type = QUAD4
-    nx = 100
-    ny = 100
+    nx = 300
+    ny = 300
     nz = 0
     xmin = 0
-    xmax = 25
+    xmax = 50
     ymin = 0
-    ymax = 25
+    ymax = 50
     zmin = 0
     zmax = 0
   []
@@ -33,8 +33,8 @@
     [./cIC]
       type = RandomIC
       variable = c
-      min = 0.49
-      max = 0.51
+      min = 0.48
+      max = 0.52
     [../]
   []
   
@@ -65,7 +65,7 @@
     [./constants]
       type = GenericConstantMaterial
       prop_names = 'kappa_c'
-      prop_values = '1'
+      prop_values = '0.1'
     [../]
     [./tensor_iso]
       type = ConstantAnisotropicMobility #This is actually isotropic but this material object is best for the CompositeMobilityTensor
@@ -77,7 +77,7 @@
     [./tensor_ani]
       type = ConstantAnisotropicMobility
       M_name = anisotropic_tensor
-      tensor = '0.1 0 0 
+      tensor = '0.3 0 0 
                 0 0.2 0 
                 0 0 0'
     [../]
@@ -105,7 +105,7 @@
     property_name = f_loc
     coupled_variables = 'c'
     constant_names = 'W'
-    constant_expressions = 2.7
+    constant_expressions = 3.1
     # expression = W*(1-c)^2*(1+c)^2
     expression = c*log(c)+(1-c)*log(1-c)+W*c*(1-c)
     enable_jit = true
@@ -131,21 +131,21 @@
   [../]
 []
 
-  [Executioner]
-    type = Transient
-    solve_type = NEWTON
-    scheme = bdf2
-    l_max_its = 30
-    l_tol = 1e-6
-    nl_max_its = 20
-    nl_abs_tol = 1e-9
-    end_time = 20
-    dt = 2    
-    petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
-                           -sub_pc_type -pc_asm_overlap'
-    petsc_options_value = 'asm      31                  preonly
-                           ilu          1'
-  []
+[Executioner]
+  type = Transient
+  solve_type = PJFNK
+  scheme = bdf2
+  l_max_its = 150
+  l_tol = 1e-6
+  nl_max_its = 20
+  nl_abs_tol = 1e-9
+  end_time = 10
+  dt = 0.2 
+  petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
+                         -sub_pc_type -pc_asm_overlap'
+  petsc_options_value = 'asm      1000                  preonly
+                         ilu          2'
+[]
   
   [Outputs]
     exodus = true

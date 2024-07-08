@@ -1,8 +1,6 @@
 #
-# Solving the Basic Cahn-Hilliard equation with the 
-# main interest of observing differences due to change in mobility value.
-# This input has anisotropic constant mobility.
-#
+# Solving the Basic Cahn-Hilliard equation with CompositeTensorMaterial
+# NEED TO FIX
 
 [Mesh]
     # generate a 2D, 25nm x 25nm mesh
@@ -65,21 +63,47 @@
   
   [Materials]
     [./constants]
-      type = GenericFunctionMaterial
+      type = GenericConstantMaterial
       prop_names = 'kappa_c'
       prop_values = '0.1'
     [../]
-    [./mobility] #2D By changing the tensor's diagonal entries and visualizing, it is easy to see the anisotropic mobility.
-      type = ConstantAnisotropicMobility
-      M_name = 'M'
-      tensor = '0.3 0 0
-                0 0.2 0
+    [./tensor_iso]
+      type = ConstantAnisotropicMobility #This is actually isotropic but this material object is best for the CompositeMobilityTensor
+      M_name = isotropic_tensor
+      tensor = '0.1 0 0 
+                0 0.1 0 
                 0 0 0'
-    []
+    [../]
+    [./tensor_ani]
+      type = ConstantAnisotropicMobility
+      M_name = anisotropic_tensor
+      tensor = '0.3 0 0 
+                0 0.2 0 
+                0 0 0'
+    [../]
+    [./c_weight]
+      type = DerivativeParsedMaterial
+      coupled_variables = c
+      property_name = concentration
+      expression = 'c'
+    [../]
+      [./one_minus_c_weight]
+      type = DerivativeParsedMaterial
+      coupled_variables = c
+      property_name = one_minus_concentration
+      expression = '1-c'
+    [../]
+    [./effective_mobility]
+      type = CompositeMobilityTensor
+      M_name = 'M'
+      coupled_variables = c
+      tensors = 'anisotropic_tensor isotropic_tensor'
+      weights = 'concentration one_minus_concentration'
+    [../]
     [./free_energy]
     type = DerivativeParsedMaterial
     property_name = f_loc
-    coupled_variables = c
+    coupled_variables = 'c'
     constant_names = 'W'
     constant_expressions = 3.1
     # expression = W*(1-c)^2*(1+c)^2
@@ -87,7 +111,7 @@
     enable_jit = true
     outputs = exodus
     [../]
-  [] 
+  []
 
   [Preconditioning]
     [./coupled]
@@ -107,21 +131,21 @@
   [../]
 []
 
-  [Executioner]
-    type = Transient
-    solve_type = PJFNK
-    scheme = bdf2
-    l_max_its = 150
-    l_tol = 1e-6
-    nl_max_its = 20
-    nl_abs_tol = 1e-9
-    end_time = 10
-    dt = 0.2 
-    petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
-                           -sub_pc_type -pc_asm_overlap'
-    petsc_options_value = 'asm      1000                  preonly
-                           ilu          2'
-  []
+[Executioner]
+  type = Transient
+  solve_type = PJFNK
+  scheme = bdf2
+  l_max_its = 150
+  l_tol = 1e-6
+  nl_max_its = 20
+  nl_abs_tol = 1e-9
+  end_time = 10
+  dt = 0.2 
+  petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
+                         -sub_pc_type -pc_asm_overlap'
+  petsc_options_value = 'asm      1000                  preonly
+                         ilu          2'
+[]
   
   [Outputs]
     exodus = true

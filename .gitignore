@@ -1,4 +1,6 @@
 .libs
+*.e
+*.csv
 *.la
 *.lo
 *.d
@@ -326,3 +328,5 @@ share/
 /tutorials/darcy_thermo_mech/*/darcy_thermo_mech.yaml
 olive.yaml
 experiment_results.csv
+*.csv
+*.e

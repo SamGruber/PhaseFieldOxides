@@ -1,6 +1,7 @@
 #
 # Solving the Basic Cahn-Hilliard equation with the 
 # main interest of observing differences due to change in mobility value.
+# This input has isotropic constant mobility.
 #
 
 [Mesh]
