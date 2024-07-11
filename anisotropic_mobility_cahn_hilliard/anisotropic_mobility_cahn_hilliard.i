@@ -5,7 +5,7 @@
 #
 
 [Mesh]
-    # generate a 2D, 25nm x 25nm mesh
+    # generate a 2D, 50nm x 50nm mesh
     type = GeneratedMesh
     dim = 2
     elem_type = QUAD4
