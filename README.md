@@ -11,7 +11,7 @@ This MOOSE project solves the Cahn-Hilliard equation to examine the effects of d
 
 The energy density expression used in these simulations is given by: 
 ```math
-F(c) = c \log(c) + (1 - c) \log(1 - c) + Wc(1 - c)
+f(c) = c \log(c) + (1 - c) \log(1 - c) + Wc(1 - c)
 ```
 
 The parameter \( W \) varies according to the mobility to ensure convergence.
