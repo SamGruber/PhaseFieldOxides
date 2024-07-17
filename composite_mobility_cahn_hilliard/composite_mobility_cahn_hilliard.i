@@ -5,15 +5,15 @@
 [Mesh]
     # generate a 2D, 50nm x 50nm mesh
     type = GeneratedMesh
-    dim = 2
     elem_type = QUAD4
+    dim = 2
     nx = 300
-    ny = 300
+    ny = 60
     nz = 0
     xmin = 0
     xmax = 50
     ymin = 0
-    ymax = 50
+    ymax = 10
     zmin = 0
     zmax = 0
   []
@@ -37,10 +37,10 @@
       max = 0.52
     [../]
   []
-  
+
   #[BCs] No BCs at the moment as the default is \partialu\partialn = 0, the so-called natural BC
   #[]
-  
+
   [Kernels]
     [./w_dot]
       variable = w
@@ -77,7 +77,7 @@
     [./tensor_ani]
       type = ConstantAnisotropicMobility
       M_name = anisotropic_tensor
-      tensor = '0.3 0 0 
+      tensor = '0.1 0 0 
                 0 0.2 0 
                 0 0 0'
     [../]

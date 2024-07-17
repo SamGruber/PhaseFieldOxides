@@ -37,6 +37,11 @@ The parameter \( W \) varies according to the mobility to ensure convergence.
 |  | \( M_iso = 0.1, M_x=0.3, M_y = 0.2 \) | \( W = 3.1 \) |
 | Effective Mobility | \(Troubleshooting\) |
 
+The composite mobility $M$ is given by:
+```math
+M = c M_{ani} + (1 - c) M_{iso}
+```
+
 ### Preconditioners and Solve Types
 
 - **Preconditioner**: Single Matrix Preconditioner (SMP)

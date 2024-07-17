@@ -7,15 +7,15 @@
 [Mesh]
     # generate a 2D, 50nm x 50nm mesh
     type = GeneratedMesh
-    dim = 2
     elem_type = QUAD4
+    dim = 2
     nx = 300
-    ny = 300
+    ny = 60
     nz = 0
     xmin = 0
     xmax = 50
     ymin = 0
-    ymax = 50
+    ymax = 10
     zmin = 0
     zmax = 0
   []
@@ -67,14 +67,14 @@
     [./constants]
       type = GenericFunctionMaterial
       prop_names = 'kappa_c M' # Change this mobility value to observe differences
-      prop_values = '0.1 0.8'
+      prop_values = '0.1 0.2'
     [../]
     [./free_energy]
     type = DerivativeParsedMaterial
     property_name = f_loc
     coupled_variables = c
     constant_names = 'W'
-    constant_expressions = 2.5
+    constant_expressions = 3.2
     # expression = W*(1-c)^2*(1+c)^2
     expression = c*log(c)+(1-c)*log(1-c)+W*c*(1-c)
     enable_jit = true
