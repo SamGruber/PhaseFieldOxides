@@ -42,6 +42,17 @@ The composite mobility $M$ is given by:
 M = c M_{ani} + (1 - c) M_{iso}
 ```
 
+Example:
+$$
+ M = c\left(\begin{array}{cc} 
+0.1 & 0\\
+0 & 0.2
+\end{array}\right) + 
+(1-c)\left(\begin{array}{cc} 
+0.1& 0\\ 
+0 & 0.1
+\end{array}\right)
+$$ 
 ### Preconditioners and Solve Types
 
 - **Preconditioner**: Single Matrix Preconditioner (SMP)
