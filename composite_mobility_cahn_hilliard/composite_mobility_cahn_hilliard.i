@@ -7,8 +7,8 @@
     type = GeneratedMesh
     elem_type = QUAD4
     dim = 2
-    nx = 300
-    ny = 60
+    nx = 512
+    ny = 102
     nz = 0
     xmin = 0
     xmax = 50
@@ -33,13 +33,19 @@
     [./cIC]
       type = RandomIC
       variable = c
-      min = 0.48
-      max = 0.52
+      min = 0.49
+      max= 0.51
     [../]
   []
-
-  #[BCs] No BCs at the moment as the default is \partialu\partialn = 0, the so-called natural BC
-  #[]
+  
+  [BCs]
+    [./flux]
+    type = NeumannBC
+    boundary = top
+    variable = w
+    value = 0
+    [../]
+  []
 
   [Kernels]
     [./w_dot]
@@ -105,7 +111,7 @@
     property_name = f_loc
     coupled_variables = 'c'
     constant_names = 'W'
-    constant_expressions = 3.1
+    constant_expressions = 3.7
     # expression = W*(1-c)^2*(1+c)^2
     expression = c*log(c)+(1-c)*log(1-c)+W*c*(1-c)
     enable_jit = true
@@ -135,12 +141,12 @@
   type = Transient
   solve_type = PJFNK
   scheme = bdf2
-  l_max_its = 150
+  l_max_its = 200
   l_tol = 1e-6
   nl_max_its = 20
   nl_abs_tol = 1e-9
-  end_time = 10
-  dt = 0.2 
+  end_time = 1000
+  dt = 0.1 
   petsc_options_iname = '-pc_type -ksp_gmres_restart -sub_ksp_type
                          -sub_pc_type -pc_asm_overlap'
   petsc_options_value = 'asm      1000                  preonly
